@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=test_case
+      - POSTGRES_PASSWORD=test_case
+      - POSTGRES_DB=test_case
+  app:
+    build: ./
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://test_case:test_case@db:5432/test_case
+#    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; alembic upgrade head'
